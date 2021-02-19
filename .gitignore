@@ -1,0 +1,4 @@
+venv/
+docker/
+app/settings/.env
+**/__pycache__/**
