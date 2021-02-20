@@ -15,7 +15,7 @@ async def on_ready():
 # メッセージ受信時に動作する処理
 @client.event
 async def on_message(message):
-  if message.channel.name == 'bot操作':
+  if message.channel.name == 'bot操作' or message.channel.name == 'チャット':
     if message.content == 'm':
       rc = redis.Redis(host='localhost', port=6379)
       game,mute = get_game_vc(message.channel.category.channels)
@@ -48,6 +48,8 @@ async def on_message(message):
       key = f'mHiyori:gaming state {message.channel.category_id}'
       rc.delete(key)
       await message.channel.send('リセットされました。')
+  if message.channel.name == '/hiyochi':
+    await message.channel.send('に、にゃーん・・・///')
 
 # Botの起動とDiscordサーバーへの接続
 client.run(ACCESS_TOKEN)
