@@ -51,7 +51,7 @@ async def on_message(message):
   if message.content == '/hiyochi':
     await message.channel.send('に、にゃーん・・・///')
   if message.content == '/mugitea':
-    await message.channel.send('んふっ・・・!')
+    await message.channel.send('ぐふっ・・・!')
 
 # Botの起動とDiscordサーバーへの接続
 client.run(ACCESS_TOKEN)
