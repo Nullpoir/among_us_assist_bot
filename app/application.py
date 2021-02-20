@@ -48,7 +48,7 @@ async def on_message(message):
       key = f'mHiyori:gaming state {message.channel.category_id}'
       rc.delete(key)
       await message.channel.send('リセットされました。')
-  if message.channel.name == '/hiyochi':
+  if message.content == '/hiyochi':
     await message.channel.send('に、にゃーん・・・///')
 
 # Botの起動とDiscordサーバーへの接続
