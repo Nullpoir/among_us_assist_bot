@@ -50,6 +50,8 @@ async def on_message(message):
       await message.channel.send('リセットされました。')
   if message.content == '/hiyochi':
     await message.channel.send('に、にゃーん・・・///')
+  if message.content == '/mugitea':
+    await message.channel.send('ぶはっ・・・！')
 
 # Botの起動とDiscordサーバーへの接続
 client.run(ACCESS_TOKEN)
