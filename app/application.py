@@ -31,16 +31,14 @@ async def on_message(message):
         rc.set(key, b'1')
         state = b'1'
       
+      # muteからgameへ
       if state == b'1':
-        for member in mute.members:
-          if member.guild_permissions.value == 2147483647:
-            await member.edit(mute=False)
-          await member.move_to(game)
+        mute_connection = await mute.connect()
+        await mute_connection.move_to(game)
+      # gameからmuteへ
       else:
-        for member in game.members:
-          if member.guild_permissions.value == 2147483647:
-            await member.edit(mute=True)
-          await member.move_to(mute)
+        game_connection = await game.connect()
+        await game_connection.move_to(mute)
 
       await message.channel.send('き、切り替えました')
     if message.content == 'c':
