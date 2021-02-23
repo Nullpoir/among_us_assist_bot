@@ -28,7 +28,7 @@ async def on_message(message):
         else:
           rc.set(key, b'1')
       else:
-        rc.set(key, b'1')
+        rc.set(key, b'0')
         state = b'1'
       
       # muteからgameへ
