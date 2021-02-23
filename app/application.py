@@ -50,6 +50,7 @@ async def on_message(message):
     await message.channel.send('に、にゃーん・・・///')
   if message.content == '/mugitea':
     await message.channel.send('ぐふっ・・・!')
-
+  if message.content == '𝓜𝓾𝓰𝓲 𝓣𝓮𝓪':
+    await message.channel.send('ぶはっ！')
 # Botの起動とDiscordサーバーへの接続
 client.run(ACCESS_TOKEN)
