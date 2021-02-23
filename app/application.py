@@ -38,7 +38,7 @@ async def on_message(message):
       # muteからgameへ
       else:
         for member in game.members:
-          await member.move_to(deafen=True)
+          await member.edit(deafen=True)
 
       await message.channel.send('き、切り替えました')
     if message.content == 'c':
