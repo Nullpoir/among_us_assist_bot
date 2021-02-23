@@ -33,7 +33,7 @@ async def on_message(message):
       
       # muteからgameへ
       if state == b'1':
-        for member in mute.members:
+        for member in game.members:
           await member.edit(deafen=False)
       # muteからgameへ
       else:
