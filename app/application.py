@@ -33,12 +33,12 @@ async def on_message(message):
       
       # muteからgameへ
       if state == b'1':
-        mute_connection = await mute.connect()
-        await mute_connection.move_to(game)
-      # gameからmuteへ
+        for member in mute.members:
+          await member.edit(deafen=False)
+      # muteからgameへ
       else:
-        game_connection = await game.connect()
-        await game_connection.move_to(mute)
+        for member in game.members:
+          await member.move_to(deafen=True)
 
       await message.channel.send('き、切り替えました')
     if message.content == 'c':
