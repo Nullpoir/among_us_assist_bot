@@ -16,6 +16,7 @@ async def on_ready():
 async def on_message(message):
   # ゲームルームのミュート制御
   if message.channel.name == 'bot操作' or message.channel.name == 'チャット':
+    # ミュート切替
     if message.content == 'm':
       game = get_game_vc(message.channel.category.channels)
       state = update_state(message.channel.category_id)
@@ -31,7 +32,7 @@ async def on_message(message):
 
       await message.channel.send('き、切り替えました')
       return 0
-    
+    # 状態クリア
     elif message.content == 'c':
       reset_game_state(message.channel.category_id)
       await message.channel.send('リセットされました。')
@@ -41,7 +42,6 @@ async def on_message(message):
 
   # エンタメ 
   response = create_response(message.content)
-  print(response, message.content, response_list.get(message.content))
   if response == None:
     return 0
   else:
