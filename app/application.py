@@ -36,7 +36,7 @@ async def on_message(message):
 
   else:
     response = create_response(message.content)
-    if response == None
+    if response == None:
       return 0
     else:
       await message.channel.send(response)
