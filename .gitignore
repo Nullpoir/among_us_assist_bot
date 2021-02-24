@@ -2,3 +2,4 @@ venv/
 docker/
 app/settings/.env
 **/__pycache__/**
+.pytest_cache/
