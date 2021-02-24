@@ -47,5 +47,15 @@ async def on_message(message):
   else:
     await message.channel.send(response)
 
+# VC移動管理
+@client.event
+async def on_voice_state_update(member, before, after):
+  if before.channel.name == 'game' and after.channel.name == '天国':
+    await member.edit(mute=False)
+  elif before.channel.name == '天国' and after.channel.name == 'game':
+    await member.edit(mute=True)
+  else:
+    return 0
+
 # Botの起動とDiscordサーバーへの接続
 client.run(ACCESS_TOKEN)
