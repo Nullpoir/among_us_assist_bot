@@ -14,6 +14,7 @@ async def on_ready():
 # メッセージ受信時に動作する処理
 @client.event
 async def on_message(message):
+  # ゲームルームのミュート制御
   if message.channel.name == 'bot操作' or message.channel.name == 'チャット':
     if message.content == 'm':
       game = get_game_vc(message.channel.category.channels)
@@ -29,18 +30,22 @@ async def on_message(message):
           await member.edit(mute=False)
 
       await message.channel.send('き、切り替えました')
+      return 0
     
-    if message.content == 'c':
+    elif message.content == 'c':
       reset_game_state(message.channel.category_id)
       await message.channel.send('リセットされました。')
-
-  else:
-    response = create_response(message.content)
-    print(response, message.content, response_list.get(message.content))
-    if response == None:
       return 0
     else:
-      await message.channel.send(response)
+      pass
+
+  # エンタメ 
+  response = create_response(message.content)
+  print(response, message.content, response_list.get(message.content))
+  if response == None:
+    return 0
+  else:
+    await message.channel.send(response)
 
 # Botの起動とDiscordサーバーへの接続
 client.run(ACCESS_TOKEN)
