@@ -36,6 +36,7 @@ async def on_message(message):
 
   else:
     response = create_response(message.content)
+    print(response, message.content, response_list.get(message.content))
     if response == None:
       return 0
     else:
