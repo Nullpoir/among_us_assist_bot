@@ -25,12 +25,14 @@ async def on_message(message):
       if state == b'1':
         for member in game.members:
           await member.edit(mute=True)
+        text = 'ミュートにします・・・'
       # muteからgameへ
       else:
         for member in game.members:
           await member.edit(mute=False)
+        text = '議論してください！'
 
-      await message.channel.send('き、切り替えました')
+      await message.channel.send(text)
       return 0
     # 状態クリア
     elif message.content == 'c':
