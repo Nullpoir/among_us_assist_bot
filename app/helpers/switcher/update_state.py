@@ -9,10 +9,10 @@ def update_state(category_id):
     state = rc.get(key)
     if state == b'1':
       rc.set(key, b'0')
-       return WILL_MUTE
+      return WILL_MUTE
     else:
       rc.set(key, b'1')
-       return WILL_DISCUSS
+      return WILL_DISCUSS
   else:
     rc.set(key, b'0')
     state = b'1'
