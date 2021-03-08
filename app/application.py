@@ -21,13 +21,13 @@ async def on_message(message):
       game = get_game_vc(message.channel.category.channels)
       state = update_state(message.channel.category_id)
       
-      # muteからgameへ
-      if state == b'1':
+      # gameからmuteへ
+      if state == WILL_MUTE:
         for member in game.members:
           await member.edit(mute=True)
         text = 'ミュートにします・・・'
       # muteからgameへ
-      else:
+      elif state == WILL_DISCUSS:
         for member in game.members:
           await member.edit(mute=False)
         text = '議論してください！'
@@ -39,8 +39,6 @@ async def on_message(message):
       reset_game_state(message.channel.category_id)
       await message.channel.send('リセットされました。')
       return 0
-    else:
-      pass
 
   # エンタメ 
   response = create_response(message.content)
