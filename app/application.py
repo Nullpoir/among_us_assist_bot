@@ -1,6 +1,7 @@
 import discord
 from helpers import *
 from settings.settings import *
+from tasks import mute, unmute
 
 # 接続に必要なオブジェクトを生成
 client = discord.Client()
@@ -23,13 +24,11 @@ async def on_message(message):
       
       # gameからmuteへ
       if state == WILL_MUTE:
-        for member in game.members:
-          await member.edit(mute=True)
+        mute.delay(game.members)
         text = 'ミュートにします・・・'
       # muteからgameへ
       elif state == WILL_DISCUSS:
-        for member in game.members:
-          await member.edit(mute=False)
+        unmute.delay(game.members)
         text = '議論してください！'
 
       await message.channel.send(text)
