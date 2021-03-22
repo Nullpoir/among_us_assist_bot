@@ -1,9 +1,6 @@
 import discord
 from helpers import *
 from settings.settings import *
-from multiprocessing import Pool
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
 
 # 接続に必要なオブジェクトを生成
 client = discord.Client()
@@ -19,7 +16,6 @@ async def on_ready():
 async def on_message(message):
   # ゲームルームのミュート制御
   if message.channel.name == 'bot操作' or message.channel.name == 'チャット':
-    worker = asyncio.get_running_loop()
     # ミュート切替
     if message.content == 'm':
       game = get_game_vc(message.channel.category.channels)
