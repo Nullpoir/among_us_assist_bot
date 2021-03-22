@@ -1,7 +1,9 @@
 import discord
 from helpers import *
 from settings.settings import *
-from tasks import mute, unmute
+from multiprocessing import Pool
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 # 接続に必要なオブジェクトを生成
 client = discord.Client()
@@ -17,18 +19,19 @@ async def on_ready():
 async def on_message(message):
   # ゲームルームのミュート制御
   if message.channel.name == 'bot操作' or message.channel.name == 'チャット':
+    worker = asyncio.get_running_loop()
     # ミュート切替
     if message.content == 'm':
       game = get_game_vc(message.channel.category.channels)
       state = update_state(message.channel.category_id)
-      
+
       # gameからmuteへ
       if state == WILL_MUTE:
-        mute.delay(game.members)
-        text = 'ミュートにします・・・'
+        await mute(game.members)
+        text = 'ミュートにしました。'
       # muteからgameへ
       elif state == WILL_DISCUSS:
-        unmute.delay(game.members)
+        await unmute(game.members)
         text = '議論してください！'
 
       await message.channel.send(text)
