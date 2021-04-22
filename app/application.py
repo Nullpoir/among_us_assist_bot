@@ -1,5 +1,5 @@
 import discord
-from helpers import *
+from services import *
 from settings.settings import *
 
 # 接続に必要なオブジェクトを生成
@@ -18,42 +18,32 @@ async def on_message(message):
   if message.channel.name == 'bot操作' or message.channel.name == 'チャット':
     # ミュート切替
     if message.content == 'm':
-      game = get_game_vc(message.channel.category.channels)
-      state = update_state(message.channel.category_id)
-
-      # gameからmuteへ
-      if state == WILL_MUTE:
-        await mute(game.members)
-        text = 'ミュートにしました。'
-      # muteからgameへ
-      elif state == WILL_DISCUSS:
-        await unmute(game.members)
-        text = '議論してください！'
-
-      await message.channel.send(text)
-      return 0
+      text = await switcher(message)
+      return await message.channel.send(text)
     # 状態クリア
     elif message.content == 'c':
       reset_game_state(message.channel.category_id)
-      await message.channel.send('リセットされました。')
-      return 0
+      return await message.channel.send('リセットされました。')
 
   # エンタメ 
   response = create_response(message.content)
-  if response == None:
-    return 0
-  else:
-    await message.channel.send(response)
+  if response != None:
+    return await message.channel.send(response)
+  
+  return None
 
 # VC移動管理
 @client.event
 async def on_voice_state_update(member, before, after):
-  if before.channel.name == 'game' and after.channel.name == '天国':
-    await member.edit(mute=False)
-  elif before.channel.name == '天国' and after.channel.name == 'game':
-    await member.edit(mute=True)
-  else:
-    return 0
+  try:
+    if before.channel.name == 'game' and after.channel.name == '天国':
+      return await member.edit(mute=False)
+    elif before.channel.name == '天国' and after.channel.name == 'game':
+      return await member.edit(mute=True)
+    else:
+      return None
+  except AttributeError:
+    return None
 
 # Botの起動とDiscordサーバーへの接続
 client.run(ACCESS_TOKEN)
