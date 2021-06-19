@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
-const env = require('./settings/settings.js') 
+const env = require('./settings.js')
+
 const client = new Discord.Client()
 
 client.on('ready', () => {
