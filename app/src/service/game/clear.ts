@@ -13,6 +13,9 @@ const clearState = async (rc: any, key: string) => {
 }
 
 exports.clear = async (msg: any, rc: any) => {
+  let start: any = Date.now()
   let categoryName = msg.channel.parent.name
   await clearState(rc, categoryName)
+  let duration = Date.now() - start
+  await msg.channel.send(`リセットしました。(${duration}ms)`)
 }

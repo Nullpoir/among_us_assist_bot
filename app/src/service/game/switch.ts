@@ -29,14 +29,17 @@ const updateState = async (rc:any, key: string) => {
 }
 
 exports.switch = async(msg: any, rc: any) => {
+  let start: any = Date.now()
   let gameVC = getGameVoiceChannel(msg.channel.parent.children)
   let categoryName = msg.channel.parent.name
   let state = await updateState(rc, categoryName)
   if(state === WILL_MUTE) {
     await mute(gameVC.members)
-    console.log('muted')
+    let duration = Date.now() - start
+    await msg.channel.send(`ミュートしました。(${duration}ms)`)
   } else {
     await unmute(gameVC.members)
-    console.log('unmuted')
+    let duration = Date.now() - start
+    await msg.channel.send(`議論してください！(${duration}ms)`)
   }
 }
