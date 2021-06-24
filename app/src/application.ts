@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
-const env = require('./settings.js')
+import { ACCESS_TOKEN } from './settings'
 const redisClient = require('./interface/redis.js').client;
-const service = require('./service/service.js');
+const service = require('./service/service');
 
 const client = new Discord.Client()
 
@@ -9,7 +9,7 @@ client.on('ready', () => {
   console.log(`${client.user.tag} でログインしています。`)
 })
 
-client.on('message', async message => {
+client.on('message', async (message: any) => {
   if (message.content === 'm') {
     service.switch(message,redisClient)
   }
@@ -20,4 +20,4 @@ client.on('disconnect', () => {
   redisClient.quit()
 })
 
-client.login(env.ACCESS_TOKEN)
+client.login(ACCESS_TOKEN)
