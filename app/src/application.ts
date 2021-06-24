@@ -12,6 +12,8 @@ client.on('ready', () => {
 client.on('message', async (message: any) => {
   if (message.content === 'm') {
     service.switch(message,redisClient)
+  } else if (message.content === 'c') {
+    service.clear(message, redisClient)
   }
 })
 

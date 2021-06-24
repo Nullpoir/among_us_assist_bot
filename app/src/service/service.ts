@@ -1,1 +1,2 @@
-exports.switch = require('./switch.js').switch;
+exports.switch = require('./game/switch.js').switch;
+exports.clear = require('./game/clear.js').clear;
