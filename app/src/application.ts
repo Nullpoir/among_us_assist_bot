@@ -10,10 +10,12 @@ client.on('ready', () => {
 })
 
 client.on('message', async (message: any) => {
-  if (message.content === 'm') {
-    service.switch(message,redisClient)
-  } else if (message.content === 'c') {
-    service.clear(message, redisClient)
+  if (message.channel.name === 'bot操作' || message.channel.name === 'チャット'){
+    if (message.content === 'm') {
+      service.switch(message, redisClient)
+    } else if (message.content === 'c') {
+      service.clear(message, redisClient)
+    }
   }
 })
 
