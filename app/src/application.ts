@@ -6,7 +6,7 @@ const service = require('./service/service');
 const client = new Discord.Client()
 
 client.on('ready', () => {
-  console.log(`${client.user.tag} でログインしています。`)
+  console.log(`ready with ${client.user.tag} `)
 })
 
 client.on('message', async (message: any) => {
