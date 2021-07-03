@@ -23,11 +23,11 @@ async def on_message(message):
 
       # gameからmuteへ
       if state == WILL_MUTE:
-        await mute(game.members)
+        await set_mute(game.members, True)
         text = 'ミュートにしました。'
       # muteからgameへ
       elif state == WILL_DISCUSS:
-        await unmute(game.members)
+        await set_mute(game.members, False)
         text = '議論してください！'
 
       await message.channel.send(text)
