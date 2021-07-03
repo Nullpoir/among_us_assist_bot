@@ -1,2 +1,2 @@
 from .switcher import *
-from .talks import *
+from .clear import *

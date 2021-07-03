@@ -1,5 +1,5 @@
 import discord
-from helpers import *
+from service import *
 from settings.settings import *
 
 # 接続に必要なオブジェクトを生成
@@ -16,34 +16,14 @@ async def on_ready():
 async def on_message(message):
   # ゲームルームのミュート制御
   if message.channel.name == 'bot操作' or message.channel.name == 'チャット':
-    # ミュート切替
     if message.content == 'm':
-      game = get_game_vc(message.channel.category.channels)
-      state = update_state(message.channel.category_id)
-
-      # gameからmuteへ
-      if state == WILL_MUTE:
-        await set_mute(game.members, True)
-        text = 'ミュートにしました。'
-      # muteからgameへ
-      elif state == WILL_DISCUSS:
-        await set_mute(game.members, False)
-        text = '議論してください！'
-
-      await message.channel.send(text)
+      await switcher(message)
       return 0
-    # 状態クリア
     elif message.content == 'c':
-      reset_game_state(message.channel.category_id)
-      await message.channel.send('リセットされました。')
+      await clear(message)
       return 0
-
-  # エンタメ 
-  response = create_response(message.content)
-  if response == None:
-    return 0
   else:
-    await message.channel.send(response)
+    return 0
 
 # VC移動管理
 @client.event
