@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 import { ACCESS_TOKEN } from './settings'
 const redisClient = require('./interface/redis.js').client;
-const service = require('./service/service');
+const usecases = require('./usecases/usecases');
 
 const client = new Discord.Client()
 
@@ -11,9 +11,9 @@ client.on('ready', () => {
 
 client.on('message', async (message: any) => {
   if (message.content === 'm') {
-    service.switch(message,redisClient)
+    await usecases.switch(message,redisClient)
   } else if (message.content === 'c') {
-    service.clear(message, redisClient)
+    await usecases.clear(message, redisClient)
   }
 })
 
