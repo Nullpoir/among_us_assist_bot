@@ -1,11 +1,10 @@
 import { getGameVoiceChannel, WILL_MUTE, WILL_UNMUTE } from './common.js'
-require('array-foreach-async');
 
 const mute = async (members: any) => {
-  await Promise.all(members.map(async (member: any) => await member.edit({ mute: true })))
+  await Promise.all(members.map((member: any) => member.edit({ mute: true })))
 }
 const unmute = async (members: any) => {
-  await Promise.all(members.map(async (member: any) => await member.edit({ mute: false })))
+  await Promise.all(members.map((member: any) => member.edit({ mute: false })))
 }
 const updateState = async (rc:any, key: string) => {
   return new Promise(async (resolve, reject) => {
