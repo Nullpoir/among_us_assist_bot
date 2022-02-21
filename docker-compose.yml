@@ -1,5 +1,12 @@
-version: '3'
+version: "3"
 services:
+  go:
+    volumes:
+      - ./app:/app:cached
+    tty: true
+    command: /bin/bash
+    build:
+      context: .
   redis:
     image: "redis:latest"
     ports:
