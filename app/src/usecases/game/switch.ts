@@ -1,10 +1,13 @@
 import { getGameVoiceChannel, WILL_MUTE, WILL_UNMUTE } from './common.js'
 
-const mute = async (members: any) => {
-  await Promise.all(members.map((member: any) => member.edit({ mute: true })))
-}
-const unmute = async (members: any) => {
-  await Promise.all(members.map((member: any) => member.edit({ mute: false })))
+const mute = async (members: any, mute: boolean) => {
+  return Promise.all(
+    members.map(
+      (member: any) => {
+        member.edit({ mute: mute })
+      }
+    )
+  )
 }
 const updateState = async (rc:any, key: string) => {
   return new Promise(async (resolve, reject) => {
@@ -26,11 +29,11 @@ exports.switch = async(msg: any, rc: any) => {
   let categoryName = msg.channel.parent.name
   let state = await updateState(rc, categoryName)
   if(state === WILL_MUTE) {
-    await mute(gameVC.members)
+    await mute(gameVC.members, true)
     let duration = Date.now() - start
     await msg.channel.send(`ミュートしました。(${duration}ms)`)
   } else {
-    await unmute(gameVC.members)
+    await mute(gameVC.members, false)
     let duration = Date.now() - start
     await msg.channel.send(`議論してください！(${duration}ms)`)
   }
