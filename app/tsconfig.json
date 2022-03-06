@@ -18,5 +18,15 @@
     "experimentalDecorators": true,
     "pretty": true,
     "newLine": "CRLF"
-  }
+  },
+  "baseUrl": "./",
+  "paths": {
+    "*": [
+      "node_modules/*",
+      "src/*"
+    ]
+  },
+  "include": [
+    "src/**/*"
+  ]
 }

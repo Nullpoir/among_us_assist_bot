@@ -1,4 +1,4 @@
-import { WILL_MUTE } from './common.js'
+import { WILL_MUTE } from './common'
 
 const clearState = async (rc: any, key: string) => {
   return new Promise(async (resolve, reject) => {

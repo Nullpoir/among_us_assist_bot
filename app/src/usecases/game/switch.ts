@@ -1,4 +1,4 @@
-import { getGameVoiceChannel, WILL_MUTE, WILL_UNMUTE } from './common.js'
+import { getGameVoiceChannel, WILL_MUTE, WILL_UNMUTE } from './common'
 
 const mute = async (members: any, mute: boolean) => {
   return Promise.all(

@@ -15,13 +15,12 @@
     "gulp-terser": "^2.0.1",
     "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-uglify": "^3.0.2",
-    "ts-node": "^10.0.0",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.7.0",
     "typescript": "^4.3.4"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node production/application.js",
-    "build": "gulp default",
-    "watch": "gulp watch"
+    "start": "nodemon"
   }
 }
