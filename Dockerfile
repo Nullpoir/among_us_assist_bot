@@ -1,11 +1,8 @@
 FROM node:12
 
-COPY package*.json ./
+COPY ./app /app
+WORKDIR /app
 
 RUN yarn install
 
-COPY . .
-
 CMD [ "yarn", "start" ]
-
-

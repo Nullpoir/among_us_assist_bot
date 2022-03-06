@@ -2,14 +2,20 @@ version: '3'
 x-app: &app
   build:
     context: .
+  env_file:
+    - .env
+  environment:
+    KVS_HOST: kvs
 services:
   app:
-    <<-: *app
+    <<: *app
     volumes:
         - ./app:/app:cached
-    command: yarn watch
-  redis:
-    image: "redis:latest"
+    working_dir: /app
+    depends_on:
+      - kvs
+  kvs:
+    image: redis:6.0
     ports:
       - "6379:6379"
     volumes:

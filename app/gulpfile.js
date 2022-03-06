@@ -8,7 +8,7 @@ const proj = require("gulp-typescript").createProject("tsconfig.json");
 gulp.task('default', build);
 // srcフォルダの変更を監視してビルド
 gulp.task('watch', function () {
-  gulp.watch('./app/src/**/*.ts', build);
+  gulp.watch('./src/**/*.ts', build);
 });
 
 function build() {
@@ -26,5 +26,5 @@ function build() {
       sourceRoot: './',
       includeContent: false
     }))
-    .pipe(gulp.dest("app/production/"));
+    .pipe(gulp.dest("production/"));
 }

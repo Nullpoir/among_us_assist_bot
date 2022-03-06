@@ -1,7 +1,7 @@
 {
   "name": "among_us_assist_bot",
   "version": "1.0.0",
-  "main": "app/src/application.js",
+  "main": "src/application.js",
   "repository": "https://nullpoir:dkkk7206@github.com/Nullpoir/among_us_assist_bot.git",
   "author": "nullpoir <nullpoir0805@gmail.com>",
   "license": "MIT",
@@ -20,7 +20,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app/production/application.js",
+    "start": "node production/application.js",
     "build": "gulp default",
     "watch": "gulp watch"
   }

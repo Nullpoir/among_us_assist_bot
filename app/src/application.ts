@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 import { ACCESS_TOKEN } from './settings'
-const redisClient = require('./interface/redis.js').client;
+const redisClient = require('./infra/redis.js').client;
 const usecases = require('./usecases/usecases');
 
 const client = new Discord.Client()
