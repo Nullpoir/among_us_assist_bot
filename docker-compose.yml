@@ -1,5 +1,13 @@
 version: '3'
+x-app: &app
+  build:
+    context: .
 services:
+  app:
+    <<-: *app
+    volumes:
+        - ./app:/app:cached
+    command: yarn watch
   redis:
     image: "redis:latest"
     ports:
