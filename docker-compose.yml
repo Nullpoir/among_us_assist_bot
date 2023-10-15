@@ -1,25 +1,23 @@
 version: "3.7"
 
-x-app: &api-app
-  build:
-    context: ./app
-  depends_on:
-    - redis
-  environment:
-    CLIENT_ID: ${CLIENT_ID}
-    CLIENT_SECRET: ${CLIENT_SECRET}
-    ACCESS_TOKEN: ${ACCESS_TOKEN}
-    REDIS_HOST: ${REDIS_HOST}
-    REDIS_PORT: ${REDIS_PORT}
-  volumes:
-    - ./app:/app:cached
 services:
   bot:
-    <<: *api-app
+    build:
+      context: ./app
+    depends_on:
+      - kvs
     command: bash -c "python ./application.py"
+    volumes:
+      - ./app:/app:cached
+    environment:
+      CLIENT_ID: ${CLIENT_ID}
+      CLIENT_SECRET: ${CLIENT_SECRET}
+      ACCESS_TOKEN: ${ACCESS_TOKEN}
+      KVS_HOST: ${KVS_HOST}
+      KVS_PORT: ${KVS_PORT}
     stdin_open: true
     tty: true
-  redis:
+  kvs:
     image: redis:6.0
     ports:
       - "6379:6379"

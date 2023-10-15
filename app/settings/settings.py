@@ -9,5 +9,5 @@ load_dotenv(dotenv_path)
 
 ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 
-REDIS_HOST = os.environ.get("REDIS_HOST")
-REDIS_PORT = int(os.environ.get("REDIS_PORT"))
+KVS_HOST = os.environ.get("KVS_HOST")
+KVS_PORT = int(os.environ.get("KVS_PORT"))
