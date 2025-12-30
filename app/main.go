@@ -123,8 +123,14 @@ func onVoiceStateUpdate(s *discordgo.Session, v *discordgo.VoiceStateUpdate) {
 		return
 	}
 
-	from := v.BeforeUpdate.ChannelID
-	to := v.ChannelID
+	from, err := channelNameFromID(s, v.BeforeUpdate.ChannelID)
+	if(err != nil) {
+		return
+	}
+	to, err := channelNameFromID(s, v.ChannelID)
+	if(err != nil) {
+		return
+	}
 
 	if from == to {
 		return
