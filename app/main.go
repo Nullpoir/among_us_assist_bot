@@ -21,7 +21,6 @@ import (
 var (
 	BotToken            = os.Getenv("ACCESS_TOKEN")
 	ControlTextChannel  = os.Getenv("CONTROL_TEXT_CH") // m を受け付ける text ch
-	TargetVoiceChannel  = os.Getenv("TARGET_VOICE_CH") // mute 対象 VC
 	LobbyVC             = os.Getenv("LOBBY_VC")         // 移動元 VC
 	MeetingVC           = os.Getenv("MEETING_VC")       // 移動先 VC
 	MaxConcurrency      = 5                              // 並列数（10人なら5で十分）
@@ -75,7 +74,13 @@ func onMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	if m.ChannelID != ControlTextChannel {
+	chName, err := channelNameFromID(s, m.ChannelID)
+	if err != nil {
+		log.Println("failed to get channel name")
+		return
+	}
+
+	if chName != ControlTextChannel {
 		return
 	}
 
@@ -85,11 +90,14 @@ func onMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	guild, err := s.State.Guild(m.GuildID)
 	if err != nil {
-		log.Println("guild state error:", err)
+		log.Println("failed to get guild")
 		return
 	}
 
-	userIDs := collectUsersInVC(guild, TargetVoiceChannel)
+	userIDs, _ := GetUserIDsInVoiceChannel(s, guild, MeetingVC)
+
+	log.Println(userIDs)
+
 	if len(userIDs) == 0 {
 		return
 	}
@@ -177,12 +185,37 @@ func execMuteParallel(
 ====================
 */
 
-func collectUsersInVC(guild *discordgo.Guild, vcID string) []string {
-	users := []string{}
+func GetUserIDsInVoiceChannel(
+	s *discordgo.Session,
+	guild *discordgo.Guild,
+	voiceChannelName string,
+) ([]string, error) {
+	userIDs := make([]string, 0)
+
+	log.Printf("%#v", guild)
+
+
 	for _, vs := range guild.VoiceStates {
-		if vs.ChannelID == vcID {
-			users = append(users, vs.UserID)
+		targetChannelName, _ := channelNameFromID(s, vs.ChannelID)
+		log.Println(voiceChannelName)
+		if targetChannelName == voiceChannelName {
+			userIDs = append(userIDs, vs.UserID)
 		}
 	}
-	return users
+
+	return userIDs, nil
+}
+
+func channelNameFromID(s *discordgo.Session, channelID string) (string, error) {
+	ch, err := s.State.Channel(channelID)
+	if err !=  nil {
+		ch, err := s.Channel(channelID)
+
+		if err != nil {
+			return "",  err
+		}
+
+		return ch.Name, nil
+	}
+	return ch.Name, nil
 }

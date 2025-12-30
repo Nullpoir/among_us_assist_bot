@@ -14,6 +14,9 @@ services:
       ACCESS_TOKEN: ${ACCESS_TOKEN}
       KVS_HOST: ${KVS_HOST}
       KVS_PORT: ${KVS_PORT}
+      CONTROL_TEXT_CH: ${CONTROL_TEXT_CH}
+      LOBBY_VC: ${LOBBY_VC}
+      MEETING_VC: ${MEETING_VC}
     stdin_open: true
     tty: true
   kvs:
