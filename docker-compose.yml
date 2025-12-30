@@ -1,12 +1,11 @@
-version: "3.7"
-
 services:
   bot:
     build:
       context: ./app
+      dockerfile: 'Dockerfile.dev'
     depends_on:
       - kvs
-    command: bash -c "python ./application.py"
+    # command: bash -c "python ./application.py"
     volumes:
       - ./app:/app:cached
     environment:
