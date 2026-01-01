@@ -9,6 +9,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"among_us_assist_bot/cmd/usecases/message_handle"
 	"among_us_assist_bot/configs"
+	"among_us_assist_bot/cmd/utils"
 )
 
 /*
@@ -58,11 +59,11 @@ func onVoiceStateUpdate(s *discordgo.Session, v *discordgo.VoiceStateUpdate) {
 		return
 	}
 
-	from, err := message_handle.ChannelNameFromID(s, v.BeforeUpdate.ChannelID)
+	from, err := utils.ChannelNameFromID(s, v.BeforeUpdate.ChannelID)
 	if(err != nil) {
 		return
 	}
-	to, err := message_handle.ChannelNameFromID(s, v.ChannelID)
+	to, err := utils.ChannelNameFromID(s, v.ChannelID)
 	if(err != nil) {
 		return
 	}
