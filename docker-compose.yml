@@ -2,7 +2,7 @@ services:
   bot:
     build:
       context: ./app
-      dockerfile: 'Dockerfile.dev'
+      dockerfile: 'build/Dockerfile.dev'
     depends_on:
       - kvs
     # command: bash -c "python ./application.py"

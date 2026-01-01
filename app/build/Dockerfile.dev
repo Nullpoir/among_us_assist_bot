@@ -6,4 +6,4 @@ RUN go install github.com/air-verse/air@latest
 
 COPY . .
 
-CMD ["air", "-c", ".air.toml"]
+CMD ["air", "-c", "configs/.air.toml"]
