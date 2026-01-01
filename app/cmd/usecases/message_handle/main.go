@@ -8,6 +8,7 @@ import (
 	"among_us_assist_bot/cmd/utils"
 )
 
+// 操作chからのコマンドを受信
 func MessageHandle(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.Bot {
 		return

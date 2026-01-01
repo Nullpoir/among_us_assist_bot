@@ -12,12 +12,6 @@ import (
 	"among_us_assist_bot/configs"
 )
 
-/*
-====================
- main
-====================
-*/
-
 func main() {
 	if configs.BotToken == "" {
 		log.Fatal("DISCORD_BOT_TOKEN is required")

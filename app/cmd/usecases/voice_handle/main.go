@@ -6,6 +6,10 @@ import (
 	"among_us_assist_bot/cmd/utils"
 )
 
+// VCチャンネルの監視
+// 天国→gameではmute
+// game→天国はmute解除
+
 func VoiceHandle(s *discordgo.Session, v *discordgo.VoiceStateUpdate) {
 	if v.BeforeUpdate == nil {
 		return
