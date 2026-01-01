@@ -8,8 +8,8 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"among_us_assist_bot/cmd/usecases/message_handle"
+	"among_us_assist_bot/cmd/usecases/voice_handle"
 	"among_us_assist_bot/configs"
-	"among_us_assist_bot/cmd/utils"
 )
 
 /*
@@ -34,7 +34,7 @@ func main() {
 			discordgo.IntentsMessageContent
 
 	dg.AddHandler(message_handle.MessageHandle)
-	dg.AddHandler(onVoiceStateUpdate)
+	dg.AddHandler(voice_handle.VoiceHandle)
 
 	if err := dg.Open(); err != nil {
 		log.Fatal(err)
@@ -47,38 +47,4 @@ func main() {
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
 	<-stop
 }
-
-/*
-====================
- VoiceState 移動補正
-====================
-*/
-
-func onVoiceStateUpdate(s *discordgo.Session, v *discordgo.VoiceStateUpdate) {
-	if v.BeforeUpdate == nil {
-		return
-	}
-
-	from, err := utils.ChannelNameFromID(s, v.BeforeUpdate.ChannelID)
-	if(err != nil) {
-		return
-	}
-	to, err := utils.ChannelNameFromID(s, v.ChannelID)
-	if(err != nil) {
-		return
-	}
-
-	if from == to {
-		return
-	}
-
-	switch {
-	case from == configs.LobbyVC && to == configs.MeetingVC:
-		_ = s.GuildMemberMute(v.GuildID, v.UserID, true)
-
-	case from == configs.MeetingVC && to == configs.LobbyVC:
-		_ = s.GuildMemberMute(v.GuildID, v.UserID, false)
-	}
-}
-
 
