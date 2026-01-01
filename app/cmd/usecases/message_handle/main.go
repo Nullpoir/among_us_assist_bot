@@ -34,9 +34,11 @@ func MessageHandle(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	userIDs, _ := utils.GetUserIDsInVoiceChannel(s, guild, configs.MeetingVC)
-
-	log.Println(userIDs)
+	userIDs, err := utils.GetUserIDsInVoiceChannel(s, guild, configs.MeetingVC)
+	if err != nil {
+		log.Println("failed to get users")
+		return
+	}
 
 	if len(userIDs) == 0 {
 		return
