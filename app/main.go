@@ -17,7 +17,7 @@ func main() {
 		log.Fatal("DISCORD_BOT_TOKEN is required")
 	}
 
-	dg, err := discordgo.New("Bot " + configs.BotToken)
+	dg, err := discordgo.New(configs.DiscordToken)
 	if err != nil {
 		log.Fatal(err)
 	}
