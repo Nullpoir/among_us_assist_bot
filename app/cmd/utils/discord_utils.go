@@ -2,10 +2,8 @@ package utils
 
 import (
 	"log"
-	"context"
 	"sync"
 	"github.com/bwmarrin/discordgo"
-	"among_us_assist_bot/configs"
 )
 
 func ExecMuteParallel(
@@ -14,10 +12,6 @@ func ExecMuteParallel(
 	userIDs []string,
 	mute bool,
 ) {
-	ctx, cancel := context.WithTimeout(context.Background(), configs.OperationTimeout)
-	defer cancel()
-
-	sem := make(chan struct{}, configs.MaxConcurrency)
 	var wg sync.WaitGroup
 
 	for _, uid := range userIDs {
@@ -25,13 +19,6 @@ func ExecMuteParallel(
 
 		go func(userID string) {
 			defer wg.Done()
-
-			select {
-			case sem <- struct{}{}:
-				defer func() { <-sem }()
-			case <-ctx.Done():
-				return
-			}
 
 			if err := s.GuildMemberMute(guildID, userID, mute); err != nil {
 				log.Printf("mute failed %s: %v", userID, err)
