@@ -52,4 +52,6 @@ func MessageHandle(s *discordgo.Session, m *discordgo.MessageCreate) {
 	newMute := !member.Mute
 
 	utils.ExecMuteParallel(s, m.GuildID, userIDs, newMute)
+
+	s.ChannelMessageSend(m.ChannelID, "議論してください！")
 }
