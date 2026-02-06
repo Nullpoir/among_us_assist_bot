@@ -57,4 +57,4 @@ app/
 - 日本語のProjectです
 - Go module pathは `among_us_assist_bot`
 - Git flowに従います: `develop` がmainのbranchです
-- Goソースコードはappにあります
+- Goソースコードはプロジェクトルート直下の`app`ディレクトリにあります
