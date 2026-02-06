@@ -58,3 +58,5 @@ app/
 - Go module pathは `among_us_assist_bot`
 - Git flowに従います: `develop` がmainのbranchです
 - Goソースコードはプロジェクトルート直下の`app`ディレクトリにあります
+- Discord API内容を認識ください：https://discord.com/developers/docs/reference
+- 
