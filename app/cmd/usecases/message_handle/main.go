@@ -2,12 +2,14 @@ package message_handle
 
 import (
 	"log"
-	"strings"
-	"github.com/bwmarrin/discordgo"
-	"among_us_assist_bot/configs"
-	"among_us_assist_bot/cmd/utils"
-	"time"
 	"strconv"
+	"strings"
+	"time"
+
+	"among_us_assist_bot/cmd/utils"
+	"among_us_assist_bot/configs"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 // 操作chからのコマンドを受信
@@ -31,41 +33,54 @@ func MessageHandle(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	guild, err := s.State.Guild(m.GuildID)
+	// 会議VCのチャンネルIDを取得
+	meetingChID, err := utils.ChannelIDFromName(s, m.GuildID, configs.MeetingVC)
 	if err != nil {
-		log.Println("failed to get guild")
+		log.Printf("会議VCの取得失敗: %v", err)
+		s.ChannelMessageSend(m.ChannelID, "会議VCが見つかりません。")
+		return
+	}
+
+	// ミュート対象ロールのIDを取得
+	roleID, err := utils.RoleIDFromName(s, m.GuildID, configs.MuteRole)
+	if err != nil {
+		log.Printf("ロールの取得失敗: %v", err)
+		s.ChannelMessageSend(m.ChannelID, "ミュート対象ロールが見つかりません。")
+		return
+	}
+
+	// 現在のミュート状態を確認
+	isMuted, err := utils.IsChannelSpeakDenied(s, meetingChID, roleID)
+	if err != nil {
+		log.Printf("ミュート状態の確認失敗: %v", err)
 		s.ChannelMessageSend(m.ChannelID, "システムエラーです。")
 		return
 	}
 
-	userIDs, err := utils.GetUserIDsInVoiceChannel(s, guild, configs.MeetingVC)
-	if err != nil {
-		log.Println("failed to get users")
-		s.ChannelMessageSend(m.ChannelID, "システムエラーです。")
-		return
-	}
-
-	if len(userIDs) == 0 {
-		s.ChannelMessageSend(m.ChannelID, "ミュート対象が検知できませんでした...再入室をお願いします。")
-		return
-	}
-
-	// mute 状態は最初の1人を見て反転
-	member, err := s.GuildMember(m.GuildID, userIDs[0])
-	if err != nil {
-		return
-	}
-	newMute := !member.Mute
+	newMute := !isMuted
 
 	start := time.Now()
-	utils.ExecMuteParallel(s, m.GuildID, userIDs, newMute)
+	err = utils.SetChannelSpeakPermission(s, meetingChID, roleID, newMute)
+	if err != nil {
+		log.Printf("パーミッション変更失敗: %v", err)
+		s.ChannelMessageSend(m.ChannelID, "ミュート操作に失敗しました。")
+		return
+	}
+
+	// 管理者はパーミッションオーバーライドを無視するため個別にミュート
+	adminIDs := utils.GetAdminUserIDsInVoiceChannel(s, m.GuildID, configs.MeetingVC)
+	for _, uid := range adminIDs {
+		if err := s.GuildMemberMute(m.GuildID, uid, newMute); err != nil {
+			log.Printf("管理者ミュート失敗 %s: %v", uid, err)
+		}
+	}
+
 	elapsed := time.Since(start)
+	elapsedStr := strconv.FormatFloat(elapsed.Seconds(), 'f', 3, 64) + "s"
 
-	elapsed_str := strconv.FormatFloat(elapsed.Seconds(), 'f', 3, 64) + "s"
-
-	if (newMute) {
-		s.ChannelMessageSend(m.ChannelID, "ミュートしました！" + elapsed_str)
+	if newMute {
+		s.ChannelMessageSend(m.ChannelID, "ミュートしました！"+elapsedStr)
 	} else {
-		s.ChannelMessageSend(m.ChannelID, "議論してください！" + elapsed_str)
+		s.ChannelMessageSend(m.ChannelID, "議論してください！"+elapsedStr)
 	}
 }

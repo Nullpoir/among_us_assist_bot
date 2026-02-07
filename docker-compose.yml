@@ -17,6 +17,7 @@ services:
       CONTROL_TEXT_CH: ${CONTROL_TEXT_CH}
       LOBBY_VC: ${LOBBY_VC}
       MEETING_VC: ${MEETING_VC}
+      MUTE_ROLE: ${MUTE_ROLE}
     stdin_open: true
     tty: true
   kvs:

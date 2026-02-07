@@ -23,7 +23,8 @@ func main() {
 	}
 
 	dg.Identify.Intents =
-		discordgo.IntentsGuildMessages |
+		discordgo.IntentsGuilds |
+			discordgo.IntentsGuildMessages |
 			discordgo.IntentsGuildVoiceStates |
 			discordgo.IntentsMessageContent
 

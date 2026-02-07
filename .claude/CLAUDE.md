@@ -31,6 +31,7 @@ cp .env.example .env
 | `CONTROL_TEXT_CH` | mを受け入れるch名 |
 | `LOBBY_VC` | ロビーVC名 |
 | `MEETING_VC` | 会議VC名 |
+| `MUTE_ROLE` | ミュート対象ロール名（チャンネルパーミッション制御用） |
 
 ## 構成
 
@@ -50,7 +51,15 @@ app/
 
 **イベント駆動設計**: `main.go` には以下のイベントハンドラを組み込んでいます:
 - `MessageHandle` — `CONTROL_TEXT_CH`で`m`を受け取ったら、`MEETING_VC`のmute/unmuteを切り替えます
-- `VoiceHandle` — `LOBBY_VC`から`MEETING_VC`に移動する際に自動でmute/unmuteを切り替えます
+- `VoiceHandle` — 管理者がVC間を移動した際に個別ミュート/解除を行います
+
+## ミュート方式（ハイブリッド）
+
+ユーザー単位のサーバーミュート（`GuildMemberMute`）ではなく、**チャンネルパーミッションオーバーライド**で`MUTE_ROLE`の`SPEAK`権限をdeny/clearする方式。1回のAPIコールでユーザー数に関係なく完了する。
+
+ただし`ADMINISTRATOR`権限を持つユーザーはパーミッションオーバーライドを無視するため、管理者のみ個別に`GuildMemberMute`を実行するハイブリッド方式をとっている。
+
+- Botに必要な権限: `MANAGE_ROLES`（チャンネル権限管理）+ `MUTE_MEMBERS`（管理者用）
 
 ## 重要な内容
 
